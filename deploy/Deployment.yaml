@@ -147,9 +147,6 @@ spec:
           ports:
             - name: main-port
               containerPort: 8080
-          volumeMounts:
-            - name: varlog
-              mountPath: /var/log
           resources:
             requests:
               cpu: "100m"
