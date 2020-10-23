@@ -1,0 +1,231 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sky
+  labels:
+    version: 1.0.0
+spec:
+  selector:
+    matchLabels:
+      app: sky
+  template:
+    metadata:
+      labels:
+        app: sky
+        version: 1.0.0
+    spec:
+      initContainers:
+        - name: init-agent
+          image: itmabo/skywalking-agent:latest
+          volumeMounts:
+            - name: agent
+              mountPath: /opt/agent/
+      containers:
+        - name: sky
+          image: itmabo/sky:v1.0.0
+          imagePullPolicy: Always
+          ports:
+            - name: main-port
+              containerPort: 8080
+          volumeMounts:
+            - name: varlog
+              mountPath: /var/log
+            - name: agent
+              mountPath: /opt/agent/
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "1000Mi"
+            limits:
+              cpu: "900m"
+              memory: "1500Mi"
+      volumes:
+        - name: varlog
+          hostPath:
+            path: /var/log
+        - name: agent
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sky
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: main-port
+  selector:
+    app: sky
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bees
+  labels:
+    version: 1.0.0
+spec:
+  selector:
+    matchLabels:
+      app: bees
+  template:
+    metadata:
+      labels:
+        app: bees
+        version: 1.0.0
+    spec:
+      initContainers:
+        - name: init-agent
+          image: itmabo/skywalking-agent:latest
+          volumeMounts:
+            - name: agent
+              mountPath: /opt/agent/
+      containers:
+        - name: bees
+          image: itmabo/bees:v1.0.0
+          imagePullPolicy: Always
+          ports:
+            - name: main-port
+              containerPort: 8080
+          volumeMounts:
+            - name: varlog
+              mountPath: /var/log
+            - name: agent
+              mountPath: /opt/agent/
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "1000Mi"
+            limits:
+              cpu: "900m"
+              memory: "1500Mi"
+      volumes:
+        - name: varlog
+          hostPath:
+            path: /var/log
+        - name: agent
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bees
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: main-port
+  selector:
+    app: bees
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skywalking-ui
+  labels:
+    version: 1.0.0
+spec:
+  selector:
+    matchLabels:
+      app: skywalking-ui
+  template:
+    metadata:
+      labels:
+        app: skywalking-ui
+        version: 1.0.0
+    spec:
+      containers:
+        - name: skywalking-ui
+          image: apache/skywalking-ui:8.1.0
+          imagePullPolicy: Always
+          ports:
+            - name: main-port
+              containerPort: 8080
+          volumeMounts:
+            - name: varlog
+              mountPath: /var/log
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "1000Mi"
+            limits:
+              cpu: "900m"
+              memory: "1500Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: skywalking-ui
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: main-port
+  selector:
+    app: skywalking-ui
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sky
+  labels:
+    version: 1.0.0
+spec:
+  selector:
+    matchLabels:
+      app: sky
+  template:
+    metadata:
+      labels:
+        app: sky
+        version: 1.0.0
+    spec:
+      containers:
+        - name: skywalking-oap-server
+          image: apache/skywalking-oap-server:8.1.0-es7
+          imagePullPolicy: Always
+          ports:
+            - name: main-port
+              containerPort: 8080
+            - name: cllect
+              containerPort: 12800
+            - name: grpc
+                containerPort: 11800
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "1000Mi"
+            limits:
+              cpu: "900m"
+              memory: "1500Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: skywalking-oap-server
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: main-port
+    - name: cllect
+      port: 12800
+      protocol: gRPC
+      targetPort: cllect
+    - name: grpc
+      port: 11800
+      protocol: gRPC
+      targetPort: grpc
+  selector:
+    app: bees

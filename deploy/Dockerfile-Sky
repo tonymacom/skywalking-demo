@@ -1,0 +1,11 @@
+FROM openjdk:8-jre-alpine
+
+LABEL maintainer="ittony.ma@gmail.com"
+
+ARG JAR_FILE=../sky/target/*.jar
+
+ADD ${JAR_FILE} /app.jar
+
+CMD ["java", "-javaagent:/opt/agent/skywalking-agent.jar",""-Xmx1024m", "-XX:-UseGCOverheadLimit", "-jar", "/app.jar"]
+
+EXPOSE 8080
