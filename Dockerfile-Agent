@@ -4,4 +4,4 @@ ENV LANG=C.UTF-8
 
 LABEL maintainer="ittony.ma@gmail.com"
 
-ADD skywalking-agent.jar /opt/com/tony/agent
+ADD skywalking-agent.jar /opt/com/tony/agent/
