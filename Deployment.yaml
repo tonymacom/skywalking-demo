@@ -87,9 +87,10 @@ spec:
       initContainers:
         - name: init-agent
           image: apache/skywalking-base:8.1.0-es7
+          command: ["cp", "-r", "/skywalking/agent", "/opt/copy"]
           volumeMounts:
             - name: agent
-              mountPath: /opt/agent/
+              mountPath: /opt/copy
       containers:
         - name: bees
           image: itmabo/bees:v1.0.0
