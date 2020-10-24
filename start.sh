@@ -1,11 +1,11 @@
 #!/usr/bin/env sh
-cd ../sky
+cd sky
 mvn clean install -DskipTests
 
 cd ../bees
 mvn clean install -DskipTests
 
-cd ../deploy
+cd ../
 
 docker build -t itmabo/skywalking-agent:latest . -f Dockerfile-Agent
 docker push itmabo/skywalking-agent:latest

@@ -6,4 +6,4 @@ LABEL maintainer="ittony.ma@gmail.com"
 
 RUN set -eux && mkdir -p /opt/skywalking/agent/
 
-ADD ../agent/skywalking-agent.jar /opt/agent/
+ADD agent/skywalking-agent.jar /opt/agent/

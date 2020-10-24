@@ -173,18 +173,18 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sky
+  name: skywalking-oap-server
   labels:
-    version: 1.0.0
+    version: 8.1.0-es7
 spec:
   selector:
     matchLabels:
-      app: sky
+      app: skywalking-oap-server
   template:
     metadata:
       labels:
-        app: sky
-        version: 1.0.0
+        app: skywalking-oap-server
+        version: 8.1.0-es7
     spec:
       containers:
         - name: skywalking-oap-server
@@ -196,7 +196,7 @@ spec:
             - name: cllect
               containerPort: 12800
             - name: grpc
-                containerPort: 11800
+              containerPort: 11800
           resources:
             requests:
               cpu: "100m"
@@ -218,11 +218,11 @@ spec:
       targetPort: main-port
     - name: cllect
       port: 12800
-      protocol: gRPC
+      protocol: TCP
       targetPort: cllect
     - name: grpc
       port: 11800
-      protocol: gRPC
+      protocol: TCP
       targetPort: grpc
   selector:
     app: bees
