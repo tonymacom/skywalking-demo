@@ -17,7 +17,7 @@ spec:
       initContainers:
         - name: init-agent
           image: itmabo/skywalking-agent:latest
-          command: ["cp", "-r", "/opt", "/opt/sidecar"]
+          command: ["cp", "-r", "/opt/tony", "/opt/sidecar"]
           volumeMounts:
             - name: agent
               mountPath: /opt/sidecar
