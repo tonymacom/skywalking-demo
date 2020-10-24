@@ -27,7 +27,7 @@ public class SkyRest {
 
         try {
             CloseableHttpClient httpclient = HttpClients.createDefault();
-            HttpGet httpget = new HttpGet("http://localhost:28080/getBees");
+            HttpGet httpget = new HttpGet("http://bees:8080/getBees");
             CloseableHttpResponse response = httpclient.execute(httpget);
             try {
                 HttpEntity entity = response.getEntity();

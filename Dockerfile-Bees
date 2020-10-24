@@ -6,6 +6,6 @@ ARG JAR_FILE=bees/target/*.jar
 
 ADD ${JAR_FILE} /app.jar
 
-CMD ["java", "-Xmx1024m", "-XX:-UseGCOverheadLimit", "-jar", "/app.jar"]
+CMD ["java", "-javaagent:/opt/agent/agent/skywalking-agent.jar" ,"-Xmx1024m", "-XX:-UseGCOverheadLimit", "-jar", "/app.jar"]
 
 EXPOSE 8080
