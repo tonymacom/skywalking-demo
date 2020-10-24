@@ -17,6 +17,7 @@ spec:
       initContainers:
         - name: init-agent
           image: itmabo/skywalking-agent:latest
+          imagePullPolicy: Always
           command: ["cp", "-r", "/opt/tony", "/opt/sidecar"]
           volumeMounts:
             - name: agent
