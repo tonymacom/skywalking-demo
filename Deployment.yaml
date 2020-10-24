@@ -16,9 +16,9 @@ spec:
     spec:
       initContainers:
         - name: init-agent
-          image: itmabo/skywalking-agent:latest
+          image: apache/skywalking-base:8.1.0-es7
           imagePullPolicy: Always
-          command: ["cp", "-r", "/opt/com/tony/proxy", "/opt/copy"]
+          command: ["cp", "-r", "/skywalking/agent", "/opt/copy"]
           volumeMounts:
             - name: agent
               mountPath: /opt/copy
@@ -26,6 +26,9 @@ spec:
         - name: sky
           image: itmabo/sky:v1.0.0
           imagePullPolicy: Always
+          env:
+            - name: JAVA_OPTS
+              value: -javaagent:/opt/agent/agent/skywalking-agent.jar
           ports:
             - name: main-port
               containerPort: 8080
@@ -81,7 +84,7 @@ spec:
     spec:
       initContainers:
         - name: init-agent
-          image: itmabo/skywalking-agent:latest
+          image: apache/skywalking-base:8.1.0-es7
           volumeMounts:
             - name: agent
               mountPath: /opt/agent/
