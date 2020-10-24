@@ -6,8 +6,9 @@
 		<groupId>com.tony.product</groupId>
 		<artifactId>skywalking-demo</artifactId>
 		<version>1.0.0</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath>..</relativePath>
 	</parent>
+
 	<groupId>com.tony.product</groupId>
 	<artifactId>bees</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
