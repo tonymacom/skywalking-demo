@@ -18,10 +18,10 @@ spec:
         - name: init-agent
           image: itmabo/skywalking-agent:latest
           imagePullPolicy: Always
-          command: ["cp", "-r", "/opt/tony", "/opt/sidecar"]
+          command: ["cp", "-r", "/opt/com/tony/agent", "/opt/copy"]
           volumeMounts:
             - name: agent
-              mountPath: /opt/sidecar
+              mountPath: /opt/copy
       containers:
         - name: sky
           image: itmabo/sky:v1.0.0

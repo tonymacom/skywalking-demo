@@ -4,6 +4,4 @@ ENV LANG=C.UTF-8
 
 LABEL maintainer="ittony.ma@gmail.com"
 
-RUN set -eux && mkdir -p /opt/tony
-
-ADD skywalking-agent.jar /opt/tony/
+ADD skywalking-agent.jar /opt/com/tony/agent
