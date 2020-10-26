@@ -29,6 +29,8 @@ spec:
           env:
             - name: SW_AGENT_NAME
               value: sky
+            - name: SW_TRACE_SAMPLE_RATE
+              value: 10000
             - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
               value: skywalking-oap-server:11800
           ports:
@@ -135,38 +137,6 @@ spec:
       targetPort: main-port
   selector:
     app: bees
-
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: skywalking-ui
-  labels:
-    version: 1.0.0
-spec:
-  selector:
-    matchLabels:
-      app: skywalking-ui
-  template:
-    metadata:
-      labels:
-        app: skywalking-ui
-        version: 1.0.0
-    spec:
-      containers:
-        - name: skywalking-ui
-          image: apache/skywalking-ui:8.1.0
-          imagePullPolicy: Always
-          ports:
-            - name: main-port
-              containerPort: 8080
-          resources:
-            requests:
-              cpu: "100m"
-              memory: "1000Mi"
-            limits:
-              cpu: "900m"
-              memory: "1500Mi"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -223,4 +193,4 @@ spec:
       protocol: TCP
       targetPort: grpc
   selector:
-    app: bees
+    app: skywalking-oap-server

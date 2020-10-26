@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sky
+  labels:
+    version: 1.0.0
+spec:
+  selector:
+    matchLabels:
+      app: sky
+  template:
+    metadata:
+      labels:
+        app: sky
+        version: 1.0.0
+    spec:
+      initContainers:
+        - name: init-agent
+          image: apache/skywalking-base:8.1.0-es7
+          imagePullPolicy: Always
+          command: ["cp", "-r", "/skywalking/agent", "/opt/copy"]
+          volumeMounts:
+            - name: agent
+              mountPath: /opt/copy
+      containers:
+        - name: sky
+          image: itmabo/sky:v1.0.0
+          imagePullPolicy: Always
+          env:
+            - name: SW_AGENT_NAME
+              value: sky
+            - name: SW_TRACE_SAMPLE_RATE
+              value: '10000'
+            - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+              value: oap:11800
+          ports:
+            - name: main-port
+              containerPort: 8080
+          volumeMounts:
+            - name: varlog
+              mountPath: /var/log
+            - name: agent
+              mountPath: /opt/agent/
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "1000Mi"
+            limits:
+              cpu: "900m"
+              memory: "1500Mi"
+      volumes:
+        - name: varlog
+          hostPath:
+            path: /var/log
+        - name: agent
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sky
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: main-port
+  selector:
+    app: sky

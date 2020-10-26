@@ -1,0 +1,57 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skywalking-oap-server
+  labels:
+    version: 8.1.0-es7
+spec:
+  selector:
+    matchLabels:
+      app: skywalking-oap-server
+  template:
+    metadata:
+      labels:
+        app: skywalking-oap-server
+        version: 8.1.0-es7
+    spec:
+      containers:
+        - name: skywalking-oap-server
+          image: apache/skywalking-oap-server:8.1.0-es7
+          imagePullPolicy: Always
+          ports:
+            - name: main-port
+              containerPort: 8080
+            - name: cllect
+              containerPort: 12800
+            - name: grpc
+              containerPort: 11800
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "1000Mi"
+            limits:
+              cpu: "900m"
+              memory: "1500Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: oap
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: main-port
+    - name: cllect
+      port: 12800
+      protocol: TCP
+      targetPort: cllect
+    - name: grpc
+      port: 11800
+      protocol: TCP
+      targetPort: grpc
+  selector:
+    app: skywalking-oap-server
