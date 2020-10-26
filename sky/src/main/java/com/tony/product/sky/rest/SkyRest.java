@@ -54,6 +54,14 @@ public class SkyRest {
         return ResponseEntity.ok(result);
     }
 
+    @GetMapping("/request/something")
+    public ResponseEntity<String> err() {
+        String result = callBees("/something");
+        log.info("sky /request/err");
+        return ResponseEntity.ok(result);
+    }
+
+
     private String callBees(String url) {
         String result = null;
         try {

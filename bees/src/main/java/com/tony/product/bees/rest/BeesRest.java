@@ -9,9 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author ittony.ma@gmail.com
@@ -29,9 +27,11 @@ public class BeesRest {
         return ResponseEntity.ok(JSON.toJSONString(result));
     }
 
-    @GetMapping("/error/500")
+    @GetMapping("/something")
     public ResponseEntity<String> error500() throws Exception {
-        throw new Exception();
+        List<String> strings = Arrays.asList("a", "b", "c");
+        String a = strings.get(10);
+        return null;
     }
 
     @GetMapping("/error/{status}")
