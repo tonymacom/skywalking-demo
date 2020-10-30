@@ -23,16 +23,7 @@ spec:
             - name: main-port
               containerPort: 8080
             - name: cllect
-              containerPort: 12800
-            - name: grpc
               containerPort: 11800
-          resources:
-            requests:
-              cpu: "100m"
-              memory: "1000Mi"
-            limits:
-              cpu: "900m"
-              memory: "1500Mi"
 ---
 apiVersion: v1
 kind: Service
@@ -46,10 +37,6 @@ spec:
       protocol: TCP
       targetPort: main-port
     - name: cllect
-      port: 12800
-      protocol: TCP
-      targetPort: cllect
-    - name: grpc
       port: 11800
       protocol: TCP
       targetPort: grpc

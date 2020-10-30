@@ -28,8 +28,6 @@ spec:
           env:
             - name: SW_AGENT_NAME
               value: bees
-            - name: SW_TRACE_SAMPLE_RATE
-              value: '10000'
             - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
               value: oap:11800
           ports:
@@ -40,13 +38,6 @@ spec:
               mountPath: /var/log
             - name: agent
               mountPath: /opt/agent/
-          resources:
-            requests:
-              cpu: "100m"
-              memory: "1000Mi"
-            limits:
-              cpu: "900m"
-              memory: "1500Mi"
       volumes:
         - name: varlog
           hostPath:
